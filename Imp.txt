@@ -1,0 +1,8 @@
+Commands to run as SpingBoot MS using cmd prompt:
+
+1. mvn install
+2. java -jar target/explorecali-0.0.1-SNAPSHOT.jar
+2. http://localhost:8080/  -- Auto runs
+3. TOmcat runs on contanirezation with port changes
+    java -Dserver.port=9090 -jar target/explorecali-0.0.1-SNAPSHOT.jar
+
