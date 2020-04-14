@@ -46,7 +46,11 @@ public class TourService {
                            String duration, String bullets,
                            String keywords, String tourPackageName, Difficulty difficulty, Region region ) {
         //IF there is no Tour package, we are going for else block to throw an exception
-        TourPackage tourPackage = tourPackageRepository.findById(tourPackageName).orElseThrow(()->
+        //Caused by: java.lang.RuntimeException: Tour package does not exist: Backpack Cal  Exception is thrown here, as earlier I was trying to find
+        //tourPackageName by Id while it is fetched byName which be String
+
+        //Simple Query Method by Spring Data JPA
+        TourPackage tourPackage = tourPackageRepository.findByName(tourPackageName).orElseThrow(()->
              new RuntimeException("Tour package does not exist: " + tourPackageName));
 
         return tourRepository.save(new Tour(title, description,blurb, price, duration,

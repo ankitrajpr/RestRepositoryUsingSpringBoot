@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.mapping.Any;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,6 +28,10 @@ For object scope, need to implement CommandLineRunner and it's subsequent run me
 
 @SpringBootApplication
 public class ExplorecaliApplication implements CommandLineRunner {
+
+	//#Initialize the importfile name to ExploreCalifornia.json in application.properties
+	@Value("${ec.importfile}")
+	private String importFile;
 
 	@Autowired
 	private TourPackageService tourPackageService;
@@ -46,7 +51,8 @@ public class ExplorecaliApplication implements CommandLineRunner {
 		long numOfPackages = tourPackageService.total();
 
 		//Load the tours from an external Json File
-		createTours("ExploreCalifornia.json");
+		//createTours("ExploreCalifornia.json");
+		createTours(importFile);
 		long numOfTours = tourService.total();
 	}
 
