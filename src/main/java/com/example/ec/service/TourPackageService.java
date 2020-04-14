@@ -33,7 +33,7 @@ public class TourPackageService {
 
     /**
      * Lookup All Tour packages
-     *
+     * HTTP Get request to find all tours /tourPackages
      * @return
      */
     public Iterable<TourPackage> lookup(){
