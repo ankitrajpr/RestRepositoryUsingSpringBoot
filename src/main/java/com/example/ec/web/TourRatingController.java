@@ -62,8 +62,14 @@ public class TourRatingController {
                 map(RatingDto::new).collect(Collectors.toList());
     }
 
-    //http://localhost:8080/tours/1/ratings/avearge  --> this is with jaa 9, currently , I am in Java 8. (Map.of)
-    /*@GetMapping
+    //http://localhost:8080/tours/1/ratings/avearge  --> this is with java 9, currently , I am in Java 8. (Map.of)
+    /**
+     * Calculate the average Score of a Tour.
+     *
+     * @param tourId tour identifier
+     * @return Tuple of "average" and the average value.
+     */
+    /*@GetMapping(path = "/average")
     public Map<String, Double> getAverage(@PathVariable(value = "tourId")  int tourId){
         verifyTour(tourId);
         return Map.of("average", tourRatingRepository.findByPkTourId(tourId).stream()
@@ -72,6 +78,63 @@ public class TourRatingController {
                 new NoSuchElementException("Tour Has no Ratings")));
     }*/
 
+    /**
+     * Update score and comment of a Tour Rating
+     *
+     * @param tourId tour identifier
+     * @param ratingDto rating Data Transfer Object
+     * @return The modified Rating DTO.
+     */
+    @PutMapping
+    public RatingDto updateWithPut(@PathVariable(value = "tourId") int tourId, @RequestBody @Validated RatingDto ratingDto) {
+        TourRating rating = verifyTourRating(tourId, ratingDto.getCustomerId());
+        rating.setScore(ratingDto.getScore());
+        rating.setComment(ratingDto.getComment());
+        return new RatingDto(tourRatingRepository.save(rating));
+    }
+    /**
+     * Update score or comment of a Tour Rating
+     *
+     * @param tourId tour identifier
+     * @param ratingDto rating Data Transfer Object
+     * @return The modified Rating DTO.
+     */
+    @PatchMapping
+    public RatingDto updateWithPatch(@PathVariable(value = "tourId") int tourId, @RequestBody @Validated RatingDto ratingDto) {
+        TourRating rating = verifyTourRating(tourId, ratingDto.getCustomerId());
+        if (ratingDto.getScore() != null) {
+            rating.setScore(ratingDto.getScore());
+        }
+        if (ratingDto.getComment() != null) {
+            rating.setComment(ratingDto.getComment());
+        }
+        return new RatingDto(tourRatingRepository.save(rating));
+    }
+
+    /**
+     * Delete a Rating of a tour made by a customer
+     *
+     * @param tourId tour identifier
+     * @param customerId customer identifier
+     */
+    @DeleteMapping(path = "/{customerId}")
+    public void delete(@PathVariable(value = "tourId") int tourId, @PathVariable(value = "customerId") int customerId) {
+        TourRating rating = verifyTourRating(tourId, customerId);
+        tourRatingRepository.delete(rating);
+    }
+
+    /**
+     * Verify and return the TourRating for a particular tourId and Customer
+     * @param tourId tour identifier
+     * @param customerId customer identifier
+     * @return the found TourRating
+     * @throws NoSuchElementException if no TourRating found
+     */
+    private TourRating verifyTourRating(int tourId, int customerId) throws NoSuchElementException {
+        return tourRatingRepository.findByPkTourIdAndPkCustomerId(tourId, customerId).orElseThrow(() ->
+                new NoSuchElementException("Tour-Rating pair for request("
+                        + tourId + " for customer" + customerId));
+    }
 
     /**
      * Verify and return the Tour given a tourId.
