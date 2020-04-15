@@ -10,7 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
+import static java.util.Map.*;
 
 /**
  * Tour Rating Controller
@@ -47,6 +52,26 @@ public class TourRatingController {
         tourRatingRepository.save(new TourRating( new TourRatingPk(tour, ratingDto.getCustomerId()),
                 ratingDto.getScore(), ratingDto.getComment()));
     }
+
+
+    @GetMapping
+    public List<RatingDto> getAllRatingsForTour(@PathVariable(value = "tourId") int tourId)
+    {
+        verifyTour(tourId);
+        return tourRatingRepository.findByPkTourId(tourId).stream().
+                map(RatingDto::new).collect(Collectors.toList());
+    }
+
+    //http://localhost:8080/tours/1/ratings/avearge  --> this is with jaa 9, currently , I am in Java 8. (Map.of)
+    /*@GetMapping
+    public Map<String, Double> getAverage(@PathVariable(value = "tourId")  int tourId){
+        verifyTour(tourId);
+        return Map.of("average", tourRatingRepository.findByPkTourId(tourId).stream()
+        .mapToInt(TourRating::getScore).average()
+        .orElseThrow(() ->
+                new NoSuchElementException("Tour Has no Ratings")));
+    }*/
+
 
     /**
      * Verify and return the Tour given a tourId.
