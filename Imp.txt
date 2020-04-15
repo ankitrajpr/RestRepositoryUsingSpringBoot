@@ -24,3 +24,10 @@ http://localhost:8080/tourPackages/search/findByName?name=Backpack%20Cal
 
 --Controlling API Resource.
 So now, all are runnin by entities Name , we are goign to chnage by this to run via defined set of protocols
+
+--HAL browser
+http://localhost:8080/browser/index.html#/
+<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-rest-hal-browser</artifactId>
+		</dependency>
