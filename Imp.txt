@@ -10,3 +10,9 @@ Spring DATA Rest exposed Hateos REST API( Hypermedia As the Engine of Applicatio
 So, the driven acritecture brings usage of API's directly without writing any code state:
 like, for tour.class, it will be:
 http://localhost:8080/tours   --> Append with -s,  that is all.
+SpringData Rest scan the class files and find the spring data repositories, created endpoints that matches the entity Names appends an "s" and exposes
+the operation as API's.
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+</dependency>
