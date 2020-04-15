@@ -16,3 +16,11 @@ the operation as API's.
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 </dependency>
+
+SOrting --
+http://localhost:8080/tours/search/findByTourPackageCode?code=CC&size=2&sort=title,asc
+Search --
+http://localhost:8080/tourPackages/search/findByName?name=Backpack%20Cal
+
+--Controlling API Resource.
+So now, all are runnin by entities Name , we are goign to chnage by this to run via defined set of protocols
